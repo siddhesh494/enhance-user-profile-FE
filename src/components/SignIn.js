@@ -3,7 +3,8 @@ import { signIn } from '../APIService/auth'
 import { getCookie } from '../utils/utils'
 
 function SignIn({
-  setUserDetails
+  setUserDetails,
+  setToken
 }) {
 
   const [email, setEmail] = useState("sid1@gmail.com")
@@ -16,11 +17,13 @@ function SignIn({
           email: email,
           password: password
         })
+        console.log("response", response)
         if(response) {
           setUserDetails({
             email: response.email,
-            token: response.accessToken
+            userID: response.user_id
           })
+          setToken(response.accessToken)
           window.location = '/'
         }
       }

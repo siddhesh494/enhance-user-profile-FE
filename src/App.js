@@ -7,12 +7,31 @@ import { getCookie, setCookies } from './utils/utils';
 
 function App() {
   const [userDetails, setUserDetails] = useState({})
+  const [token, setToken] = useState(null)
 
   useEffect(() => {
-    if(!isEmpty(userDetails)) {
-      setCookies("auth", userDetails.token, 1)
+    if(token) {
+      setCookies("auth", token, 1)
     }
-  }, [userDetails])
+  }, [token])
+
+  const verifyJWR = async () => {
+    try {
+      const response = await verifyJWTToken()
+      if(response) {
+        setUserDetails({
+          email: response.email,
+          userID: response.user_id
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    verifyJWR()
+  }, [])
 
 
   return (
@@ -20,6 +39,7 @@ function App() {
       <PageRouting
         userDetails={userDetails}
         setUserDetails={setUserDetails}
+        setToken={setToken}
       />
     </div>
   );

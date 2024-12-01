@@ -7,7 +7,8 @@ import Navbar from '../utilities/Navbar'
 
 const PageRouting = ({
   userDetails,
-  setUserDetails
+  setUserDetails,
+  setToken
 }) => {
   return (
       <BrowserRouter>
@@ -32,6 +33,7 @@ const PageRouting = ({
               <SignIn 
                 userDetails={userDetails}
                 setUserDetails={setUserDetails}
+                setToken={setToken}
               />
             )}
           />

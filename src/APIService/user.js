@@ -1,7 +1,7 @@
 import { instance } from './helper';
 
 
-export const getAllUserService = async () => {
-  const result = await instance.post('/users/get', {name: "sid"}, {})
+export const getRecentlyViewedProduct = async (userID) => {
+  const result = await instance.get(`/user/${userID}/recentlyViewed`, {}, {})
   return result.data && result.data.data
 }
