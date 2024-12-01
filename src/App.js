@@ -3,16 +3,38 @@ import './App.css';
 import PageRouting from './components/PageRouting';
 import { verifyJWTToken } from './APIService/auth';
 import { isEmpty } from 'lodash';
-import { getCookie, setCookies } from './utils/utils';
+import { getCookie, removeCookie, setCookies } from './utils/utils';
 
 function App() {
   const [userDetails, setUserDetails] = useState({})
+  const [token, setToken] = useState(null)
 
   useEffect(() => {
-    if(!isEmpty(userDetails)) {
-      setCookies("auth", userDetails.token, 1)
+    if(token) {
+      setCookies("auth", token, 1)
     }
-  }, [userDetails])
+  }, [token])
+
+  const verifyJWR = async () => {
+    try {
+      const response = await verifyJWTToken()
+      if(response && response.email && response.user_id) {
+        setUserDetails({
+          email: response.email,
+          userID: response.user_id
+        })
+      } else {
+        removeCookie("auth")
+        setToken(null)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    verifyJWR()
+  }, [])
 
 
   return (
@@ -20,6 +42,7 @@ function App() {
       <PageRouting
         userDetails={userDetails}
         setUserDetails={setUserDetails}
+        setToken={setToken}
       />
     </div>
   );
