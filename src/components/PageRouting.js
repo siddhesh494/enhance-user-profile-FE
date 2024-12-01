@@ -5,38 +5,48 @@ import SignIn from './SignIn'
 import SignUp from './SignUp'
 import Navbar from '../utilities/Navbar'
 
-const PageRouting = () => {
+const PageRouting = ({
+  userDetails,
+  setUserDetails
+}) => {
   return (
-    <div>
       <BrowserRouter>
+        
         <Navbar />
+
         <Switch>
           <Route
             exact
             path="/"
             render={() => (
-              <HomePage />
+              <HomePage 
+                userDetails={userDetails}
+                setUserDetails={setUserDetails}
+              />
             )}
           />
           <Route
             exact
             path="/signIn"
             render={() => (
-              <SignIn />
+              <SignIn 
+                userDetails={userDetails}
+                setUserDetails={setUserDetails}
+              />
             )}
           />
           <Route
             exact
             path="/signUp"
             render={() => (
-              <SignUp />
+              <SignUp 
+                userDetails={userDetails}
+                setUserDetails={setUserDetails}
+              />
             )}
           />
         </Switch>
       </BrowserRouter>
-      
-      
-    </div>
   )
 }
 
