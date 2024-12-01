@@ -3,7 +3,7 @@ import './App.css';
 import PageRouting from './components/PageRouting';
 import { verifyJWTToken } from './APIService/auth';
 import { isEmpty } from 'lodash';
-import { getCookie, setCookies } from './utils/utils';
+import { getCookie, removeCookie, setCookies } from './utils/utils';
 
 function App() {
   const [userDetails, setUserDetails] = useState({})
@@ -18,11 +18,14 @@ function App() {
   const verifyJWR = async () => {
     try {
       const response = await verifyJWTToken()
-      if(response) {
+      if(response && response.email && response.user_id) {
         setUserDetails({
           email: response.email,
           userID: response.user_id
         })
+      } else {
+        removeCookie("auth")
+        setToken(null)
       }
     } catch (error) {
       console.log(error)
