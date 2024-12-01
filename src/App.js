@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import PageRouting from './components/PageRouting';
 import { verifyJWTToken } from './APIService/auth';
-import { isEmpty } from 'lodash';
-import { getCookie, removeCookie, setCookies } from './utils/utils';
+import { removeCookie, setCookies } from './utils/utils';
 
 function App() {
   const [userDetails, setUserDetails] = useState({})
@@ -23,17 +22,18 @@ function App() {
           email: response.email,
           userID: response.user_id
         })
-      } else {
-        removeCookie("auth")
-        setToken(null)
       }
     } catch (error) {
       console.log(error)
+      removeCookie('auth', '/signIn')
+      setToken(null)
     }
   }
 
   useEffect(() => {
-    verifyJWR()
+    if(!(window.location.pathname === '/signUp' || window.location.pathname === '/signIn')) {
+      verifyJWR()
+    }
   }, [])
 
 
